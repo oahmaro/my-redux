@@ -8,7 +8,7 @@
 // 3. Do not produce side effects
 
 // Library Code
-function createStore() {
+function createStore(reducer) {
   // The store should have four parts
   // 1. The State tree
   // 2. Getting the state
@@ -28,13 +28,14 @@ function createStore() {
   }
 
   const dispatch = action => {
-    state = todos(state, action)
+    state = reducer(state, action)
     listeners.forEach(listener => listener())
   }
 
   return {
     getState,
-    subscribe
+    subscribe,
+    dispatch
   }
 }
 
@@ -46,3 +47,16 @@ function todos(state = [], action) {
 
   return state
 }
+
+const store = createStore(todos)
+
+store.subscribe(() => console.log('The new state is: ', store.getState()))
+
+store.dispatch({
+  type: 'ADD_TODO',
+  todo: {
+    id: 0,
+    name: 'Learn Redux',
+    complete: false
+  }
+})
