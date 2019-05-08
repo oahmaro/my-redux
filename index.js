@@ -1,3 +1,20 @@
+// Rule #1: Only an event can change the state of the store.
+// Rule #2: The function that returns the new state needs to be a pure function
+// Rule #3:
+
+// Pure Functions:
+// 1.Return the same result if the same arguments are passed in
+// 2. Depend solely on the arguments passed into them
+// 3. Do not produce side effects
+
+function todos(state = [], action) {
+  if (action.type === 'ADD_TODO') {
+    return state.concat([action.todo])
+  }
+
+  return state
+}
+
 function createStore() {
   // The store should have four parts
   // 1. The State tree
