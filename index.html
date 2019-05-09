@@ -184,7 +184,8 @@
         Redux.applyMiddleware(checker, logger)
       )
 
-      store.subscribe(() => {
+      {
+        /* store.subscribe(() => {
         const { goals, todos } = store.getState()
 
         document.getElementById('goals').innerHTML = ''
@@ -192,7 +193,8 @@
 
         goals.forEach(addGoalToDOM)
         todos.forEach(addTodoToDOM)
-      })
+      }) */
+      }
 
       {
         /* // DOM code
@@ -378,6 +380,7 @@
             </div>
           )
         }
+        s
       }
 
       ReactDOM.render(<App store={store} />, document.getElementById('app'))
