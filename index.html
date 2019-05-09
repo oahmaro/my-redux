@@ -168,9 +168,10 @@
       const logger = store => next => action => {
         console.group(action.type)
         console.log('The action: ', action)
-        next(action)
+        let result = next(action)
         console.log('The new state: ', store.getState())
         console.groupEnd()
+        return result
       }
 
       const challenge = store => next => action => {
