@@ -165,12 +165,20 @@
         return next(action)
       }
 
+      const logger = store => next => action => {
+        console.group(action.type)
+        console.log('The action: ', action)
+        next(action)
+        console.log('The new state: ', store.getState())
+        console.groupEnd()
+      }
+
       const store = Redux.createStore(
         Redux.combineReducers({
           todos,
           goals
         }),
-        Redux.applyMiddleware(checker)
+        Redux.applyMiddleware(checker, logger)
       )
 
       store.subscribe(() => {
