@@ -385,6 +385,40 @@
         )
       }
 
+      function connect(mapStateToProps) {
+        return Component => {
+          class Receiver extends React.Component {
+            componentDidMount() {
+              const { subscribe } = this.props.store
+
+              this.unsubscribe = subscribe(() => {
+                this.forceUpdate()
+              })
+            }
+            componentWillUnmount() {
+              this.unsubscribe()
+            }
+            render() {
+              const { dispatch, getState } = this.props.store
+              const state = getState()
+              const stateNeeded = mapStateToProps(state)
+              return <Component {...stateNeeded} dispatch={dispatch} />
+            }
+          }
+          class ConnectedComponent extends React.Component {
+            render() {
+              return (
+                <Context.Consumer>
+                  {store => <Receiver store={store} />}
+                </Context.Consumer>
+              )
+            }
+          }
+
+          return ConnectedComponent
+        }
+      }
+
       class Todos extends React.Component {
         addItem = e => {
           e.preventDefault()
@@ -422,7 +456,7 @@
         }
       }
 
-      const connectedGoals = connect(state => ({
+      const ConnectedTodos = connect(state => ({
         todos: state.todos
       }))(Todos)
 
@@ -454,7 +488,7 @@
         }
       }
 
-      const connectedGoals = connect(state => ({
+      const ConnectedGoals = connect(state => ({
         goals: state.goals
       }))(Goals)
 
@@ -495,7 +529,7 @@
 
       ReactDOM.render(
         <Provider store={store}>
-          <ConectedApp />
+          <ConnectedApp />
         </Provider>,
         document.getElementById('app')
       )
