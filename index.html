@@ -422,19 +422,9 @@
         }
       }
 
-      class ConnectedTodos extends React.Component {
-        render() {
-          return (
-            <Context.Consumer>
-              {store => {
-                const { todos } = store.getState()
-
-                return <Todos todos={todos} dispatch={store.dispatch} />
-              }}
-            </Context.Consumer>
-          )
-        }
-      }
+      const connectedGoals = connect(state => ({
+        todos: state.todos
+      }))(Todos)
 
       class Goals extends React.Component {
         addItem = e => {
@@ -464,33 +454,18 @@
         }
       }
 
-      class ConnectedGoals extends React.Component {
-        render() {
-          return (
-            <Context.Consumer>
-              {store => {
-                const { goals } = store.getState()
-
-                return <Goals goals={goals} dispatch={store.dispatch} />
-              }}
-            </Context.Consumer>
-          )
-        }
-      }
+      const connectedGoals = connect(state => ({
+        goals: state.goals
+      }))(Goals)
 
       class App extends React.Component {
         componentDidMount() {
-          const { store } = this.props
+          const { dispatch } = this.props
 
-          store.dispatch(handleInitialData())
-
-          store.subscribe(() => this.forceUpdate())
+          dispatch(handleInitialData())
         }
         render() {
-          const { store } = this.props
-          const { loading } = store.getState()
-
-          if (loading === true) {
+          if (this.props.loading === true) {
             return <h3>Loading</h3>
           }
           return (
@@ -502,15 +477,9 @@
         }
       }
 
-      class ConectedApp extends React.Component {
-        render() {
-          return (
-            <Context.Consumer>
-              {store => <App store={store} />}
-            </Context.Consumer>
-          )
-        }
-      }
+      const ConnectedApp = connect(state => ({
+        loading: state.loading
+      }))(App)
 
       const Context = React.createContext()
 
