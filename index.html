@@ -76,31 +76,6 @@
       //   }
       // }
 
-      const checker = store => next => action => {
-        if (
-          action.type === ADD_TODO &&
-          action.todo.name.toLowerCase().includes('bitcoin')
-        ) {
-          return alert('Nope, Thats a bad idea!')
-        }
-        if (
-          action.type === ADD_GOAL &&
-          action.goal.name.toLowerCase().includes('bitcoin')
-        ) {
-          return alert('Nope, Thats a bad idea!')
-        }
-        return next(action)
-      }
-
-      const logger = store => next => action => {
-        console.group(action.type)
-        console.log('The action: ', action)
-        let result = next(action)
-        console.log('The new state: ', store.getState())
-        console.groupEnd()
-        return result
-      }
-
       const challenge = store => next => action => {
         if (action.type === ADD_TODO) {
           alert(`Don't forget to ${action.todo.name}!`)
